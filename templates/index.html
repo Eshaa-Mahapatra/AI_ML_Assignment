@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Mood Based Recommendations</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Mood Based Recommendations</h1>
+        <label for="mood-select">How are you feeling today?</label>
+        <select id="mood-select">
+            <option value="">Select your mood</option>
+            <option value="happy">Happy</option>
+            <option value="sad">Sad</option>
+            <option value="angry">Angry</option>
+            <option value="loved">Loved</option>
+            <option value="emotional">Emotional</option>
+            <option value="excited">Excited</option>
+            <option value="anxious">Anxious</option>
+            <option value="frustrated">Frustrated</option>
+            <option value="lonely">Lonely</option>
+            <option value="grateful">Grateful</option>
+            <option value="relaxed">Relaxed</option>
+        </select>
+        <button id="recommend-button">Get Recommendations</button>
+        
+        <div id="recommendations" class="recommendations">
+            <!-- Recommendations will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("recommend-button").addEventListener("click", async () => {
+            const mood = document.getElementById("mood-select").value;
+            if (mood) {
+                const response = await fetch('/recommend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ mood: mood }),
+                });
+                const data = await response.json();
+                displayRecommendations(data);
+            } else {
+                alert("Please select a mood!");
+            }
+        });
+
+        function displayRecommendations(recommendations) {
+            const recommendationsDiv = document.getElementById("recommendations");
+            recommendationsDiv.innerHTML = ""; // Clear previous recommendations
+
+            if (recommendations.length === 0) {
+                recommendationsDiv.innerHTML = "<p>No recommendations available for this mood.</p>";
+                return;
+            }
+
+            recommendations.forEach(content => {
+                const contentDiv = document.createElement("div");
+                contentDiv.classList.add("content-item");
+                contentDiv.innerHTML = `
+                    <h3>${content.title}</h3>
+                    <a href="${content.link}" target="_blank">Link to Content</a>
+                `;
+                recommendationsDiv.appendChild(contentDiv);
+            });
+        }
+    </script>
+</body>
+</html>

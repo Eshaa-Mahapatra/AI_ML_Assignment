@@ -37,20 +37,24 @@ def constraint_satisfaction_recommendation(user_preferences, content_options):
     return filtered_content[:3]  # Top 3 that meet preferences
 
 
-
 # Updated content database with mood associations
 content_options = [
-    {"title": "Meditation for Calm", "effect": "calm", "mood_score": 1, "type": "video", "link": "https://example.com/meditation", "description": "A guided meditation to help you find calmness and peace."},
-    {"title": "Stress Relief Music", "effect": "relaxed", "mood_score": 2, "type": "audio", "link": "https://example.com/music", "description": "Soothing music to relieve stress and anxiety."},
-    {"title": "Positive Affirmations", "effect": "motivated", "mood_score": 3, "type": "text", "link": "https://example.com/affirmations", "description": "Daily affirmations to boost your self-esteem and motivation."},
-    {"title": "Guided Breathing", "effect": "calm", "mood_score": 1, "type": "video", "link": "https://example.com/breathing", "description": "Learn breathing techniques to calm your mind."},
-    {"title": "Self-Compassion Exercise", "effect": "positive", "mood_score": 4, "type": "text", "link": "https://example.com/self-compassion", "description": "An exercise to foster self-kindness and compassion."},
-    {"title": "Understanding Anxiety", "effect": "informed", "mood_score": 3, "type": "article", "link": "https://example.com/anxiety", "description": "Read about anxiety to better understand your feelings."},
-    {"title": "Journaling Prompts for Reflection", "effect": "calm", "mood_score": 2, "type": "text", "link": "https://example.com/journaling-prompts", "description": "Prompts to help you reflect and process your emotions."},
-    {"title": "Inspirational Talks", "effect": "motivated", "mood_score": 5, "type": "video", "link": "https://example.com/inspirational-talks", "description": "Watch talks that inspire you to take action."},
-    {"title": "Yoga for Beginners", "effect": "relaxed", "mood_score": 2, "type": "video", "link": "https://example.com/yoga", "description": "A beginner's guide to yoga for relaxation and mindfulness."},
+    {"title": "Meditation for Calm", "effect": "calm", "link": "https://www.youtube.com/watch?v=66GgM5H7B2I"},
+    {"title": "Stress Relief Music", "effect": "relaxed", "link": "https://www.youtube.com/watch?v=ZQfG-0pU9rA"},
+    {"title": "Positive Affirmations", "effect": "motivated", "link": "https://www.verywellmind.com/positive-affirmations-2795625"},
+    {"title": "Guided Breathing", "effect": "calm", "link": "https://www.youtube.com/watch?v=KJ0y4i4F5bo"},
+    {"title": "Self-Compassion Exercise", "effect": "positive", "link": "https://self-compassion.org/exercise.html"},
+    {"title": "Understanding Anxiety", "effect": "informed", "link": "https://www.nami.org/Your-Journey/Individuals-with-Mental-Illness/Understanding-Anxiety"},
+    {"title": "Journaling Prompts for Reflection", "effect": "calm", "link": "https://journaltherapy.com/journaling-prompts/"},
+    {"title": "Inspirational Talks", "effect": "motivated", "link": "https://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action"},
+    {"title": "Yoga for Beginners", "effect": "relaxed", "link": "https://www.youtube.com/watch?v=Z2X3qT_V8V0"},
+    {"title": "Mindfulness Exercise", "effect": "calm", "link": "https://www.mindful.org/mindfulness-practice/"},
+    {"title": "Uplifting Podcast", "effect": "motivated", "link": "https://www.podcastwebsite.com/uplifting"},
+    {"title": "Comforting Book Recommendations", "effect": "positive", "link": "https://www.goodreads.com/shelf/show/comfy"},
+    {"title": "Inspirational Quotes", "effect": "motivated", "link": "https://www.brainyquote.com/topics/inspirational-quotes"},
+    {"title": "Healthy Recipes for Emotional Eating", "effect": "calm", "link": "https://www.eatingwell.com/recipes/20130/mealtimes/quick-healthy/"},
+    {"title": "Therapeutic Coloring Pages", "effect": "relaxed", "link": "https://www.coloringpagesforkids.com/"},
 ]
-
 
 def recommend_content(mood):
     recommendations = []
@@ -61,7 +65,13 @@ def recommend_content(mood):
         "angry": ["relaxed"],
         "happy": ["motivated"],
         "emotional": ["informed", "self-compassion"],
-        "loving": ["positive"],
+        "loved": ["positive"],
+        "excited": ["motivated"],
+        "anxious": ["calm"],
+        "frustrated": ["relaxed"],
+        "lonely": ["connected"],
+        "grateful": ["positive", "motivated"],
+        "relaxed": ["calm"],
     }
 
     # Get effects based on mood
@@ -72,6 +82,9 @@ def recommend_content(mood):
         for content in content_options:
             if content['effect'] == effect:
                 recommendations.append(content)
+    
+    # Shuffle the recommendations
+    random.shuffle(recommendations)
 
-    return recommendations
-
+    # Return up to 3 unique recommendations, ensuring they change each time
+    return recommendations[:3] if len(recommendations) >= 3 else recommendations

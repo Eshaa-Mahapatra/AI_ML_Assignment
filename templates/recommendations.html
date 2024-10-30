@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Recommendations for {{ mood }}</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Recommendations for Mood: {{ mood }}</h1>
+
+        {% if recommendations %}
+            <ul>
+                {% for item in recommendations %}
+                    <li>
+                        <h3>{{ item.title }}</h3>
+                        <a href="{{ item.link }}" target="_blank">Link to Content</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No recommendations available for this mood.</p>
+        {% endif %}
+
+        <a href="/">Go Back</a>
+    </div>
+</body>
+</html>
